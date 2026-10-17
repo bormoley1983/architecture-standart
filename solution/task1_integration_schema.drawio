@@ -1,0 +1,138 @@
+<mxfile host="app.diagrams.net" agent="Copilot" version="24.0.0">
+  <diagram id="integration-schema" name="Integration Schema">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Схема интеграции приложений банка «Стандарт» с указанием участников процессов" style="text;html=1;fontSize=16;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1420" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ===== ACTORS (participants) ===== -->
+        <mxCell id="a_client" value="Клиент&#10;(физ. лицо)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="120" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_front" value="Сотрудник&#10;фронт-офиса&#10;(отделение)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="320" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_cc" value="Оператор&#10;кол-центра" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="520" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pcc" value="Оператор&#10;партнёрского&#10;кол-центра" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="720" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_back_dep" value="Менеджер&#10;бэк-офиса&#10;(депозиты)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="240" width="40" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="a_back_cred" value="Сотрудник&#10;кредитования&#10;(бэк-офис)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="460" width="40" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ===== SYSTEMS ===== -->
+        <!-- Internet bank -->
+        <mxCell id="s_ibank" value="Интернет-банк&#10;ASP.NET MVC 4.5 / .NET FW 4.5 / MS SQL&#10;(монолит на платформе подрядчика)&#10;ЦОД + резервный ЦОД" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="240" y="120" width="300" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Website -->
+        <mxCell id="s_site" value="Сайт банка&#10;PHP + React.js (собственная разработка)" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="240" y="250" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ABS -->
+        <mxCell id="s_abs" value="АБС (автоматизированная банковская система)&#10;Десктоп Delphi / Oracle / PL-SQL&#10;(основная система: учёт операций, бухгалтерия)" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="300" width="340" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Call center -->
+        <mxCell id="s_cc" value="Система кол-центра&#10;React.js / Java Spring Boot / PostgreSQL (микросервисы)&#10;(платформа подрядчика, на инфраструктуре банка)" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="240" y="520" width="300" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Partner call center -->
+        <mxCell id="s_pcc" value="Система партнёрского кол-центра&#10;(внешняя система, другая компания)" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="240" y="720" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- SMS gateway -->
+        <mxCell id="s_sms" value="СМС-шлюз&#10;(поддержка IT-отдела банка)" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="700" y="640" width="240" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Telecom operator -->
+        <mxCell id="s_telecom" value="Телеком-оператор&#10;(внешний СМС-канал)" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="640" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Excel (manual) -->
+        <mxCell id="s_excel" value="Excel-файлы&#10;(расчёт ставок, передача по e-mail)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="700" y="480" width="180" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- ===== EDGES (integrations) ===== -->
+        <!-- Client -> Internet bank -->
+        <mxCell id="e1" value="платежи, открытие текущих счетов" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" edge="1" parent="1" source="a_client" target="s_ibank">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Client -> Website -->
+        <mxCell id="e2" value="просмотр маркетинга" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_client" target="s_site">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Internet bank -> ABS (DB direct) -->
+        <mxCell id="e3" value="ПРЯМОЕ подключение к БД АБС&#10;(MS SQL ↔ Oracle, без API)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#b85450;strokeWidth=2;dashed=1;" edge="1" parent="1" source="s_ibank" target="s_abs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Front office -> ABS -->
+        <mxCell id="e4" value="создание депозита/счёта,&#10;загрузка документов (десктоп)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_front" target="s_abs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Call center -> ABS -->
+        <mxCell id="e5" value="передача заявок/обращений в АБС" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="s_cc" target="s_abs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Call center operator -> CC system -->
+        <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_cc" target="s_cc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Partner CC operator -> PCC system -->
+        <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_pcc" target="s_pcc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Bank CC -> Partner CC (scripts) -->
+        <mxCell id="e8" value="передача скриптов звонков&#10;(от бизнес-представителей банка)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="1" source="s_cc" target="s_pcc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- ABS -> SMS gateway -->
+        <mxCell id="e9" value="СМС-оповещение клиента&#10;(ставка определена)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="s_abs" target="s_sms">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- SMS gateway -> Telecom -->
+        <mxCell id="e10" value="отправка СМС" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="s_sms" target="s_telecom">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Telecom -> Client -->
+        <mxCell id="e11" value="СМС клиенту" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="1" source="s_telecom" target="a_client">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Back office deposit -> ABS -->
+        <mxCell id="e12" value="обработка заявок, указание ставки" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_back_dep" target="s_abs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Back office credit -> ABS -->
+        <mxCell id="e13" value="анализ кредитного риска (свой раздел)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="a_back_cred" target="s_abs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Credit -> Excel -->
+        <mxCell id="e14" value="расчёт ставок (Excel)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="1" source="a_back_cred" target="s_excel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Excel -> Deposit back office -->
+        <mxCell id="e15" value="передача показателей по e-mail (ежедневно)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="1" source="s_excel" target="a_back_dep">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

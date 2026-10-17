@@ -1,0 +1,37 @@
+@startuml
+!include <C4/C4_Container>
+
+title C4 — Диаграмма компонентов: Передача ставок в кол-центры (MVP)
+
+Person(p_back, "Менеджер бэк-офиса", "Депозитные продукты")
+
+System_Ext(ext_bankcc, "Система банковского кол-центра", "React.js / Java Spring Boot / PostgreSQL")
+System_Ext(ext_partcc, "Система партнёрского кол-центра", "Внешняя система, другая компания")
+
+Container_Boundary(abs, "АБС (Delphi / Oracle / PL-SQL)") {
+    Container(abs_rates, "Сервис ставок по депозитам", "Service", "Единый источник актуальных ставок")
+    Container(abs_event, "Событие «изменение ставки»", "Event", "Триггер экспорта и инвалидации кэшей")
+}
+
+ContainerDb(cache, "Кэш ставок", "Cache", "Асинхронное чтение, без нагрузки на БД Oracle")
+
+Container_Boundary(api_box, "API ставок для кол-центра (новый, .NET)") {
+    Container(api_svc, "HTTPS API", "API", "Возврат актуальных ставок")
+}
+
+Container_Boundary(exp_box, "Сервис экспорта ставок (новый, .NET)") {
+    Container(exp_gen, "Формирование файла", "Service", "CSV/XML по расписанию и по событию изменения ставки")
+}
+
+Container(fgw, "Файловый шлюз обмена", "Gateway", "SFTP-совместимое хранилище, шифрование канала, контроль доступа")
+
+Rel(p_back, abs_rates, "Обновляет ставки (заменяет Excel)")
+Rel(abs_rates, cache, "Чтение ставок (кэш)")
+Rel(cache, api_svc, "")
+Rel(api_svc, ext_bankcc, "Актуальные ставки", "HTTPS")
+Rel(cache, exp_gen, "Чтение ставок (асинхронно)")
+Rel(abs_event, exp_gen, "Триггер по изменению ставки")
+Rel(exp_gen, fgw, "Публикация файла (CSV/XML)")
+Rel(fgw, ext_partcc, "Загрузка файла партнёром")
+
+@enduml

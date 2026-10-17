@@ -1,0 +1,56 @@
+@startuml
+!include <C4/C4_Container>
+
+title C4 Level 2 — Диаграмма контейнеров: Онлайн-открытие депозитов (MVP)
+
+Person(p_new, "Новый клиент", "Физическое лицо")
+Person(p_exist, "Существующий клиент", "Физическое лицо")
+Person(p_back, "Менеджер бэк-офиса", "Депозитные продукты")
+
+System_Ext(ext_cc, "Система кол-центра", "React.js / Java Spring Boot / PostgreSQL")
+System_Ext(ext_sms, "СМС-шлюз → Телеком-оператор", "Внешний канал отправки СМС")
+
+Container_Boundary(ib, "Интернет-банк (ASP.NET MVC 4.5 / .NET FW 4.5 / MS SQL)") {
+    Container(ib_ui, "Веб-интерфейс депозитов", "Web", "Список ставок, персонализация, форма заявки, СМС-код")
+    Container(ib_mod, "Депозитный модуль", "Service", "Валидация, формирование заявки, публикация в очередь")
+    ContainerDb(ib_cache, "Кэш ставок", "Cache", "Кратковременное хранение, отклик в мс")
+    Container(ib_sms, "Модуль подтверждения СМС", "Service", "Запрос/проверка кода")
+}
+
+Container_Boundary(site, "Сайт банка (PHP + React.js)") {
+    Container(site_ui, "Веб-интерфейс", "Web", "Список депозитов, форма заявки: телефон, Ф.И.О.")
+    ContainerDb(site_cache, "Кэш ставок", "Cache", "Отклик в мс")
+}
+
+Container_Boundary(das, "Сервис обработки депозитных заявок (новый, .NET)") {
+    Container(das_api, "API приёма заявок", "API", "От сайта и интернет-банка")
+    ContainerDb(das_store, "Хранилище заявок", "Database", "MS SQL")
+    Container(das_pub, "Публикатор событий", "Service", "В очередь сообщений")
+}
+
+ContainerQueue(mq, "Очередь сообщений", "Queue", "MVP: совместимая с платформой банка; перспектива: Kafka")
+
+Container_Boundary(abs, "АБС (Delphi / Oracle / PL-SQL)") {
+    Container(abs_rates, "Сервис ставок по депозитам", "Service", "Централизованное хранилище, актуальные + персонализированные")
+    Container(abs_proc, "Обработка заявок", "Service", "Подтверждение условий, согласование ставки")
+    Container(abs_core, "Ядро АБС", "Core", "Учёт операций, бухгалтерия")
+    ContainerDb(abs_db, "БД Oracle", "Database", "Перегружена, вертикальное масштабирование")
+}
+
+Container_Boundary(notif, "Сервис уведомлений СМС (новый, .NET)") {
+    Container(notif_logic, "Бизнес-логика СМС", "Service", "Триггеры: ставка подтверждена, депозит открыт")
+}
+
+Rel(p_new, site_ui, "Подаёт заявку (телефон, Ф.И.О.)", "", HTTPS)
+Rel(p_exist, ib_ui, "Подаёт заявку (счёт, сумма), СМС-код", "", HTTPS)
+Rel(site_ui, das_api, "Заявка (телефон, Ф.И.О.)", "", HTTPS)
+Rel(ib_mod, mq, "Заявка (счёт, сумма) — асинхронно")
+Rel(das_pub, mq, "Публикация события заявки")
+Rel(mq, abs_proc, "Потребление заявки (сглаживание нагрузки)")
+Rel(abs_rates, ib_cache, "Чтение ставок (кэш, TTL)")
+Rel(abs_rates, site_cache, "Чтение ставок (кэш, TTL)")
+Rel(abs_core, notif_logic, "События: «ставка подтверждена», «депозит открыт»")
+Rel(notif_logic, ext_sms, "Отправка СМС")
+Rel(das_api, ext_cc, "Передача заявки с сайта менеджеру", "API")
+
+@enduml
